@@ -1,8 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import logo from './logo.svg'
+import './App.css'
 
 function App() {
+  const [currentTime, setCurrentTime] = useState(0)
+
+  //set the useEffect to only render on page load with the second arg "[]"
+  //if there wasn't a "[]" then the effect would be called every time the time function is called
+
+  useEffect(() => {
+    ;(async () => {
+      await fetch('/time')
+        .then((res) => res.json())
+        .then((data) => {
+          setCurrentTime(data.time)
+        })
+    })()
+  }, [])
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,9 +33,10 @@ function App() {
         >
           Learn React
         </a>
+        <p>The Current time from Python is: {currentTime}</p>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
